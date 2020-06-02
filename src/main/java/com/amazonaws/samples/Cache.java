@@ -52,7 +52,7 @@ public class Cache {
 		
 		
 	      //create a cache for configurations data based on the cfgKey
-	      LoadingCache<String, MapClass> employeeCache = 
+	      LoadingCache<String, MapClass> cache = 
 	         CacheBuilder.newBuilder()
 	         .expireAfterAccess(30, TimeUnit.MINUTES)      // cache will expire after 30 minutes of access
 	         .build(new CacheLoader<String, MapClass>() {  // build the cacheloader
@@ -67,14 +67,14 @@ public class Cache {
 	     //on first invocation, cache will be populated with corresponding cfg key	         
 		 System.out.println("Invocation #1");
 		   for(Map.Entry m : database.entrySet()){    
-			   System.out.println(employeeCache.getUnchecked((String) m.getKey()));    
+			   System.out.println(cache.getUnchecked((String) m.getKey()));    
 			 } 
 	
 		 //second invocation, data will be returned from cache
 		 System.out.println("Invocation #2"); 
 		 
 		   for(Map.Entry m : database.entrySet()){    
-			   System.out.println(employeeCache.getUnchecked((String) m.getKey()));    
+			   System.out.println(cache.getUnchecked((String) m.getKey()));    
 			 } 
 		   
 		   
