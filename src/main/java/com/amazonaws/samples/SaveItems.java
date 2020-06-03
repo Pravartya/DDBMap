@@ -1,5 +1,8 @@
 package com.amazonaws.samples;
 
+//**** This Class is just saving the items in the Table (For Creating the Dummy Table) ///******
+
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

@@ -1,7 +1,8 @@
 package com.amazonaws.samples;
 
 //***** POJO CLASS **********/
-
+// This is basically the POJO Class which contains the format of the DDB Table///
+// Each Java Property (eg. domain,realm,etc.) corresponds to the Attributes of the items in Table
 
 
 import java.util.HashMap;

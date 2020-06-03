@@ -1,6 +1,8 @@
 package com.amazonaws.samples;
 
 //********* Cache the Whole Table after Scanning ************//
+// This file creates the Cache as a Concurrent Maps where key = CfgKey(from Table) and Value = the whole Item corresponds to the key //
+// I have just used expireAfterAccess = 30 Mins (for sample)...This will clear the data(DDB Item from the Cache Map) after 30 mins of last access.
 
 
 
@@ -47,7 +49,7 @@ public class Cache {
 		
 		databaseCreate();
 
-		System.out.println(database.size() + " ScannedCache"); 
+		System.out.println(database.size() + " Cache"); 
 		
 		
 		
@@ -72,12 +74,11 @@ public class Cache {
 	
 		 //second invocation, data will be returned from cache
 		 System.out.println("Invocation #2"); 
-		 
 		   for(Map.Entry m : database.entrySet()){    
 			   System.out.println(cache.getUnchecked((String) m.getKey()));    
 			 } 
 		   
-		   
+		   System.out.println(cache.asMap());                                                 //Printing the cache as the Map	   
 	
 	}
 		 
