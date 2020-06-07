@@ -1,0 +1,30 @@
+interface GetConfigurations
+{
+	List<MapClass> DomainRealm (String Domain,String Realm);                                        //Client will give his Domain and Realm of its application
+	Map Cache(List <MapClass> list );                                                                                     //if client needs for the cache service	
+	MapClass GetParticularConfigurationValue(String CfgKey);                                           // when client required a particular cfg value
+}
+class ApplicationConfiguration implements GetConfigurations {
+	List<MapClass> DomainRealm(String Domain,String Realm)
+	{
+		//returns list of items having input domain and realm
+	}
+	Map Cache (List <MapClass>)
+	{
+		//returns the Cache Map containing items of the application for input Domain and Realm
+	}
+	MapClass GetParticularConfigurationValue(String CfgKey)
+	{
+		//return a particular item having input domain,realm and cfgkey
+	}
+}
+
+public class ConfigurationManager{
+	public static void main(){ 
+		ApplicationConfiguration newApplication = new ApplicationConfiguration ();
+		List<MapClass> list = newApplication.DomainRealm(Domain,Realm);
+		Map cache = newApplication.Cache(list);
+	}		
+}
+
+
