@@ -10,7 +10,7 @@ import java.util.Map;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.samples.MapClass.MapValue;
+import com.amazonaws.samples.ConfigurationMap.MapValue;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -19,6 +19,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+import com.google.common.base.Joiner;
 
 public class SaveItems {
 	
@@ -41,21 +42,13 @@ public class SaveItems {
 				 .build();
         DynamoDBMapper mapper = new DynamoDBMapper(client);
         
-
-        //*****REQUEST FOR CREATING A NEW TABLE MATCHING WITH THE CLASS NAME *********
-        
-//        CreateTableRequest req = mapper.generateCreateTableRequest(MapClass.class);
-//        // Table provision throughput is still required since it cannot be specified in your POJO
-//        req.setProvisionedThroughput(new ProvisionedThroughput(5L, 5L));
-//        // Fire off the CreateTableRequest using the low-level client
-//        client.createTable(req);
-        //****************************************************************************
         
         //1st item
-        MapClass item = new MapClass();
+        ConfigurationMap item = new ConfigurationMap();
         
         item.setDomainName("test");
         item.setRealm("*");
+        item.setDomainRealm(Joiner.on(",").skipNulls().join(Arrays.asList(item.getDomainName(),item.getRealm())));
         item.setCfgKey("sqs.configuration");
         
         
@@ -71,9 +64,10 @@ public class SaveItems {
         
         
         //2nd item
-        MapClass item2 = new MapClass();
-        item2.setDomainName("yo");
+        ConfigurationMap item2 = new ConfigurationMap();
+        item2.setDomainName("prod");
         item2.setRealm("EUAmazon");
+        item2.setDomainRealm(Joiner.on(",").skipNulls().join(Arrays.asList(item2.getDomainName(),item2.getRealm())));
         item2.setCfgKey("sqs.configuration");
         
         
@@ -88,61 +82,28 @@ public class SaveItems {
         item2.setMapValue(m2);
         
         //ANOTHER ITEM
-        MapClass item3 = new MapClass();
+        ConfigurationMap item3 = new ConfigurationMap();
         item3.setDomainName("*");
         item3.setRealm("*");
+        item3.setDomainRealm(Joiner.on(",").skipNulls().join(Arrays.asList(item3.getDomainName(),item3.getRealm())));
         item3.setCfgKey("visibilityTimeout");
         item3.setIntegerValue(30);
         
         
         
         //ANOTHER ITEM
-        MapClass item4 =  new MapClass();
+        ConfigurationMap item4 =  new ConfigurationMap();
         item4.setDomainName("test");
         item4.setRealm("*");
+        item4.setDomainRealm(Joiner.on(",").skipNulls().join(Arrays.asList(item4.getDomainName(),item4.getRealm())));
         item4.setCfgKey("sqs.reservationRequests.queueName");
         item4.setStringValue("reservationRequests");
         
         
-        
-        
- 
-        
         //BATCHSAVE ALL THE ITEMS
-        mapper.batchSave(Arrays.asList(item4));
+        mapper.batchSave(Arrays.asList(item,item2,item3,item4));
         
-        
-
- 	   
- 	   
- 	   
- 	   ///////////////////////////////////////////////////////
-        
-        
-        
-        
-        
-        //SCANNInG THE TABLE  
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        List<MapClass> mapClass = mapper.scan(MapClass.class, scanExpression);                            //This List will contain all the items of the Table
-
-        System.out.println(mapClass.size());
-        
-        
-        //QUERY                                                                                           //This List will contain objs that matched with AttributeValue
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":v1", new AttributeValue().withS("prod"));
-        eav.put(":v2",new AttributeValue().withS("EUAmazon"));
-        DynamoDBQueryExpression<MapClass> queryExpression = new DynamoDBQueryExpression<MapClass>()
-         .withKeyConditionExpression("DomainName = :v1 and Realm = :v2")
-        .withExpressionAttributeValues(eav);
-        List<MapClass> latestReplies = mapper.query(MapClass.class, queryExpression);
-        System.out.println(latestReplies.size());
-       
-        
-       
-        
-		
+    
 	}
 
 

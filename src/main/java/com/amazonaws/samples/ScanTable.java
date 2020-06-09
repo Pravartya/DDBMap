@@ -2,9 +2,6 @@ package com.amazonaws.samples;
 
 /////////////// Return the List of Java Objects of Each items of the Table //////////////////
 
-
-
-
 import java.util.List;
 
 import com.amazonaws.AmazonClientException;
@@ -16,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 
 public class ScanTable {
 	
-	public  List<MapClass> scan() {
+	public  List<ConfigurationMap> scan() {
 		
 		
 		ProfileCredentialsProvider credentialsProvider = new ProfileCredentialsProvider();
@@ -38,7 +35,7 @@ public class ScanTable {
 	    
 	        //SCANNInG THE TABLE NAMED IN THE MAPCLASS
 	 		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-	 		List<MapClass> mapClass = mapper.scan(MapClass.class, scanExpression); 
+	 		List<ConfigurationMap> mapClass = mapper.scan(ConfigurationMap.class, scanExpression); 
 	 		
 	 		System.out.println(mapClass.size() + "scanTable");
 	 		return mapClass;
